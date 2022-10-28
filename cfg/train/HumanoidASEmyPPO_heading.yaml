@@ -1,0 +1,86 @@
+params:
+  seed: ${...seed}
+
+  device: ${...rl_device}
+
+  algo:
+    name: hrl_agent
+
+  model:
+    name: continuous_hrl
+
+  network:
+    name: hrl
+    separate: True
+
+    space:
+      continuous:
+        mu_activation: None
+        sigma_activation: None
+        mu_init:
+          name: default
+        sigma_init:
+          name: const_initializer
+          val: -2.3
+        fixed_sigma: True
+        learn_sigma: False
+
+    mlp:
+      units: [1024, 512]
+      activation: relu
+      d2rl: False
+
+      initializer:
+        name: default
+      regularizer:
+        name: None
+
+  load_checkpoint: ${if:${...checkpoint},True,False} # flag which sets whether to load the checkpoint
+  load_path: ${...checkpoint} # path to the checkpoint to load
+
+  config:
+    name: ${resolve_default:HumanoidAMPmy,${....experiment}}
+    # network_path: ''
+    full_experiment_name: ${.name}
+    env_name: rlgpu
+    ppo: True
+    multi_gpu: False
+    mixed_precision: False
+    normalize_input: True
+    normalize_value: True
+    value_bootstrap: True
+    num_actors: ${....task.env.numEnvs}
+    reward_shaper:
+      scale_value: 1
+    normalize_advantage: True
+    gamma: 0.99
+    tau: 0.95
+    learning_rate: 2e-5
+    lr_schedule: constant
+    kl_threshold: 0.008
+    score_to_win: 20000
+    max_epochs: ${resolve_default:5000,${....max_iterations}}
+    save_best_after: 100
+    save_frequency: 2500 #50
+    print_stats: True
+    grad_norm: 1.0
+    entropy_coef: 0.0
+    truncate_grads: False
+    e_clip: 0.2
+    horizon_length: 32 #32
+    minibatch_size: 32768 #32768 horizon_length*num_actor*num_agents(1) >= minibatch_size
+    mini_epochs: 6
+    critic_coef: 5
+    clip_value: False
+    seq_len: 4
+    bounds_loss_coef: 10
+    
+    task_reward_w: 0.8
+    disc_reward_w: 0.2
+
+    device: ${..device}
+    ppo_device: ${.device}
+    device_name: ${.device}
+    llc_steps: 5
+    llc_checkpoint: runs/ASEPpretrain_2/nn/ASEPpretrain_2_55000.pth
+    llc_config: runs/ASEPpretrain_2/config.yaml

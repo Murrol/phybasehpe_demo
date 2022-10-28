@@ -1,0 +1,218 @@
+# used to create the object
+name: HumanoidCloning_pretrain
+
+physics_engine: ${..physics_engine}
+
+# if given, will override the device setting in gym.
+env: 
+  numEnvs: ${resolve_default:784,${...num_envs}} #${resolve_default:64,${...num_envs}} #${resolve_default:4096,${...num_envs}}
+  envSpacing: 5
+  episodeLength: ${resolve_default:300,${...episodeLength}}
+  cameraFollow: True # if the camera follows humanoid or not
+  enableDebugVis: False
+  
+  pdControl: True
+  powerScale: 1.0
+  controlFrequencyInv: 2 # 30 Hz
+  stateInit: "Random" #"Random" #"Start"
+  hybridInitProb: 0.5
+  numAMPObsSteps: 10
+  clipObservations: 1.17e+15
+  clipActions: 1.17e+15
+
+  localRootObs: True
+  contactBodies: ["right_toe", "left_toe"]
+  terminationHeight: ${resolve_default:0.5,${...THeight}}
+  terminationDist: ${resolve_default:0.5,${...TDist}}
+  enableEarlyTermination: ${resolve_default:True,${...ET}}
+  enableTaskObs: True
+
+  # animation files to learn from
+  # these motions should use hyperparameters from HumanoidAMPPPO.yaml
+  #motion_file: "amp_humanoid_walk.npy"
+  # motion_root: "/home/datassd/yuxuan/amass_data_unified_999_yup_motionlib"
+  # motion_file: "CMU/55/55_28_poses.npy"
+  # motion_file: "Transitions_mocap/mazen_c3d/crawl_walkbackwards_poses.npy"
+  # motion_file: "Transitions_mocap/mazen_c3d/run_walk_poses.npy"
+  #motion_file: "amp_humanoid_dance.npy"
+  # motion_root: "/home/datassd/yuxuan/amass_with_babel"
+  motion_root: "/home/datassd/yuxuan/amass_with_babel_precomputed"
+  # motion_root: "/home/data/yuxuan/amass_with_babel_precomputed_rglob" #deprecated for root angular velocity test
+  motion_file: ${resolve_default:"motion_pretrain.yaml",${...motion_file}}
+  load_max_num: ${resolve_default:3000,${...load_max_num}}
+
+  # these motions should use hyperparameters from HumanoidAMPPPOLowGP.yaml (low global position?)
+  #motion_file: "amp_humanoid_hop.npy"
+  #motion_file: "amp_humanoid_backflip.npy"
+
+  asset:
+    assetFileName: "Humanoid/urdf/Humanoid_all_dof_alpha.urdf"
+    # assetFileName: "Humanoid/urdf/Humanoid_all_dof.urdf"
+
+  plane:
+    staticFriction: 1.0
+    dynamicFriction: 1.0
+    restitution: 0.0
+  
+  joint_params:
+    1_rz: [500.0,  50.0,   0.0, 1.0, 200.0]
+    1_ry: [500.0,  50.0,   0.0, 1.0, 200.0]
+    1_rx: [500.0,  50.0,   0.0, 1.0, 200.0]
+    4_rz: [500.0,  50.0,   0.0, 1.0, 150.0]
+    4_ry: [500.0,  50.0,   0.0, 1.0, 150.0]
+    4_rx: [500.0,  50.0,   0.0, 1.0, 150.0]
+    7_rz: [400.0,  40.0,   0.0, 1.0, 100.0]
+    7_ry: [400.0,  40.0,   0.0, 1.0, 100.0]
+    7_rx: [400.0,  40.0,   0.0, 1.0, 100.0]
+    10_rz: [200.0,  20.0,   0.0, 1.0, 100.0]
+    10_ry: [200.0,  20.0,   0.0, 1.0, 100.0]
+    10_rx: [200.0,  20.0,   0.0, 1.0, 100.0]
+    2_rz: [500.0,  50.0,   0.0, 1.0, 200.0]
+    2_ry: [500.0,  50.0,   0.0, 1.0, 200.0]
+    2_rx: [500.0,  50.0,   0.0, 1.0, 200.0]
+    5_rz: [500.0,  50.0,   0.0, 1.0, 150.0]
+    5_ry: [500.0,  50.0,   0.0, 1.0, 150.0]
+    5_rx: [500.0,  50.0,   0.0, 1.0, 150.0]
+    8_rz: [400.0,  40.0,   0.0, 1.0, 100.0]
+    8_ry: [400.0,  40.0,   0.0, 1.0, 100.0]
+    8_rx: [400.0,  40.0,   0.0, 1.0, 100.0]
+    11_rz: [200.0,  20.0,   0.0, 1.0, 100.0]
+    11_ry: [200.0,  20.0,   0.0, 1.0, 100.0]
+    11_rx: [200.0,  20.0,   0.0, 1.0, 100.0]
+    3_rz: [1000.0, 100.0,   0.0, 1.0, 200.0]
+    3_ry: [1000.0, 100.0,   0.0, 1.0, 200.0]
+    3_rx: [1000.0, 100.0,   0.0, 1.0, 200.0]
+    6_rz: [1000.0, 100.0,   0.0, 1.0, 200.0]
+    6_ry: [1000.0, 100.0,   0.0, 1.0, 200.0]
+    6_rx: [1000.0, 100.0,   0.0, 1.0, 200.0]
+    9_rz: [1000.0, 100.0,   0.0, 1.0, 200.0]
+    9_ry: [1000.0, 100.0,   0.0, 1.0, 200.0]
+    9_rx: [1000.0, 100.0,   0.0, 1.0, 200.0]
+    12_rz: [100.0,  10.0,   0.0, 1.0,  50.0]
+    12_ry: [100.0,  10.0,   0.0, 1.0,  50.0]
+    12_rx: [100.0,  10.0,   0.0, 1.0,  50.0]
+    15_rz: [100.0,  10.0,   0.0, 1.0,  50.0]
+    15_ry: [100.0,  10.0,   0.0, 1.0,  50.0]
+    15_rx: [100.0,  10.0,   0.0, 1.0,  50.0]
+    13_rz: [400.0,  40.0,   0.0, 1.0, 100.0]
+    13_ry: [400.0,  40.0,   0.0, 1.0, 100.0]
+    13_rx: [400.0,  40.0,   0.0, 1.0, 100.0]
+    16_rz: [400.0,  40.0,   0.0, 1.0, 100.0]
+    16_ry: [400.0,  40.0,   0.0, 1.0, 100.0]
+    16_rx: [400.0,  40.0,   0.0, 1.0, 100.0]
+    18_rz: [300.0,  30.0,   0.0, 1.0,  60.0]
+    18_ry: [300.0,  30.0,   0.0, 1.0,  60.0]
+    18_rx: [300.0,  30.0,   0.0, 1.0,  60.0]
+    20_rz: [100.0,  10.0,   0.0, 1.0,  50.0]
+    20_ry: [100.0,  10.0,   0.0, 1.0,  50.0]
+    20_rx: [100.0,  10.0,   0.0, 1.0,  50.0]
+    14_rz: [400.0,  40.0,   0.0, 1.0, 100.0]
+    14_ry: [400.0,  40.0,   0.0, 1.0, 100.0]
+    14_rx: [400.0,  40.0,   0.0, 1.0, 100.0]
+    17_rz: [400.0,  40.0,   0.0, 1.0, 100.0]
+    17_ry: [400.0,  40.0,   0.0, 1.0, 100.0]
+    17_rx: [400.0,  40.0,   0.0, 1.0, 100.0]
+    19_rz: [300.0,  30.0,   0.0, 1.0,  60.0]
+    19_ry: [300.0,  30.0,   0.0, 1.0,  60.0]
+    19_rx: [300.0,  30.0,   0.0, 1.0,  60.0]
+    21_rz: [100.0,  10.0,   0.0, 1.0,  50.0]
+    21_ry: [100.0,  10.0,   0.0, 1.0,  50.0]
+    21_rx: [100.0,  10.0,   0.0, 1.0,  50.0]
+
+
+sim:
+  dt: 0.0166 # 1/60 s
+  substeps: 2
+  up_axis: "y"
+  use_gpu_pipeline: ${eq:${...pipeline},"gpu"}
+  gravity: [0.0, -9.81, 0.0]
+  physx:
+    num_threads: ${....num_threads}
+    solver_type: ${....solver_type}
+    use_gpu: ${contains:"cuda",${....sim_device}} # set to False to run on CPU
+    num_position_iterations: 4 
+    num_velocity_iterations: 0
+    contact_offset: 0.02
+    rest_offset: 0.0
+    bounce_threshold_velocity: 0.2
+    max_depenetration_velocity: 10.0
+    default_buffer_size_multiplier: 5.0
+    max_gpu_contact_pairs: 8388608 # 8*1024*1024
+    num_subscenes: ${....num_subscenes}
+    contact_collection: 2 # 0: CC_NEVER (don't collect contact info), 1: CC_LAST_SUBSTEP (collect only contacts on last substep), 2: CC_ALL_SUBSTEPS (default - all contacts)
+
+task:
+  # pred_motion_root: "/home/datassd/yuxuan/amass_with_babel_precomputed"
+  # pred_motion_file: "motion_run.yaml"
+  # pred_motion_num: 0
+
+  randomize: False
+  randomization_params:
+    # specify which attributes to randomize for each actor type and property
+    frequency: 600   # Define how many environment steps between generating new randomizations
+    observations:
+      range: [0, .002] # range for the white noise
+      operation: "additive"
+      distribution: "gaussian"
+    actions:
+      range: [0., .02]
+      operation: "additive"
+      distribution: "gaussian"
+    sim_params: 
+      gravity:
+        range: [0, 0.4]
+        operation: "additive"
+        distribution: "gaussian"
+        schedule: "linear"  # "linear" will linearly interpolate between no rand and max rand
+        schedule_steps: 3000
+    actor_params:
+      humanoid:
+        color: True
+        rigid_body_properties:
+          mass: 
+            range: [0.5, 1.5]
+            operation: "scaling"
+            distribution: "uniform"
+            setup_only: True # Property will only be randomized once before simulation is started. See Domain Randomization Documentation for more info.
+            schedule: "linear"  # "linear" will linearly interpolate between no rand and max rand
+            schedule_steps: 3000
+        rigid_shape_properties:
+          friction:
+            num_buckets: 500
+            range: [0.7, 1.3]
+            operation: "scaling"
+            distribution: "uniform"
+            schedule: "linear"  # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+            schedule_steps: 3000
+          restitution:
+            range: [0., 0.7]
+            operation: "scaling"
+            distribution: "uniform"
+            schedule: "linear"  # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+            schedule_steps: 3000
+        dof_properties:
+          damping: 
+            range: [0.5, 1.5]
+            operation: "scaling"
+            distribution: "uniform"
+            schedule: "linear"  # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+            schedule_steps: 3000
+          stiffness: 
+            range: [0.5, 1.5]
+            operation: "scaling"
+            distribution: "uniform"
+            schedule: "linear"  # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+            schedule_steps: 3000
+          lower:
+            range: [0, 0.01]
+            operation: "additive"
+            distribution: "gaussian"
+            schedule: "linear"  # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+            schedule_steps: 3000
+          upper:
+            range: [0, 0.01]
+            operation: "additive"
+            distribution: "gaussian"
+            schedule: "linear"  # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+            schedule_steps: 3000
+
